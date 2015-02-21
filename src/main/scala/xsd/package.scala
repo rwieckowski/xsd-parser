@@ -15,12 +15,13 @@ package object xsd {
   def parseElement(n: Node): Option[Element] = {
     for {
       label <- Some(n.label)
+      name <- text(n \\ "@name")
       if label == "element"
-    } yield {
-      val name = text(n \\ "@name")
-      val ty = text(n \\ "@type")
-      Element(name, ty)
-    }
+    } yield Element(name = name,
+      _type = text(n \\ "@type"),
+      minOccurs = occurs(n \\ "@minOccurs").getOrElse(Number(1)),
+      maxOccurs = occurs(n \\ "@maxOccurs").getOrElse(Number(1))
+    )
   }
 
 }

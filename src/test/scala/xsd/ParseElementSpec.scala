@@ -6,23 +6,23 @@ class ParseElementSpec extends UnitSpec {
   }
 
   it should "parse element" in {
-    parseElement(<element/>) mustEqual Some(Element())
+    parseElement(<element name="elementName"/>) mustEqual Some(Element(name = "elementName"))
   }
 
   it should "parse element with prefix" in {
-    parseElement(<ns:element xmlns:ns="http://tempuri.org"/>) mustEqual Some(Element())
-  }
-
-  it should "parse element name" in {
-    parseElement(<element name="elementName"/>) mustEqual Some(Element(name=Some("elementName")))
+    parseElement(<ns:element name="elementName" xmlns:ns="http://tempuri.org"/>) mustEqual Some(Element(name = "elementName"))
   }
 
   it should "parse element type" in {
-    parseElement(<element type="xsi:string"/>) mustEqual Some(Element(ty = Some("xsi:string")))
+    parseElement(<element name="elementName" type="xsi:string"/>) mustEqual Some(Element(name = "elementName", _type = Some("xsi:string")))
   }
 
   it should "parse element min occurs" in {
+    parseElement(<element name="elementName" minOccurs="5"/>) mustEqual Some(Element(name = "elementName", minOccurs = Number(5)))
+  }
 
+  it should "parse element max occurs" in {
+    parseElement(<element name="elementName" maxOccurs="5"/>) mustEqual Some(Element(name = "elementName", maxOccurs = Number(5)))
   }
 
   "occurs" should "parse numeric occurence" in {
